@@ -3,12 +3,26 @@ import requests
 
 app = Flask(__name__)
 
-DEVELOPER_NAME = "Rajput Suraj Raj 🚩🇮🇳"
+DEVELOPER_NAME = "Rᴀᴊᴘᴜᴛ Sᴜʀᴀᴊ </>"
 
-def modify_response(url):
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/137.0 Safari/537.36",
+    "Accept": "application/json,text/plain,*/*",
+    "Connection": "keep-alive"
+}
+
+def fetch_data(url):
     try:
-        r = requests.get(url, timeout=15)
-        data = r.json()
+        response = requests.get(
+            url,
+            headers=HEADERS,
+            timeout=30,
+            allow_redirects=True
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
 
         if isinstance(data, dict):
             data["developer"] = DEVELOPER_NAME
@@ -17,34 +31,36 @@ def modify_response(url):
 
     except Exception as e:
         return jsonify({
-            "status": False,
+            "developer": DEVELOPER_NAME,
             "error": str(e),
-            "developer": DEVELOPER_NAME
+            "status": False
         })
-
-@app.route("/pincode=<pincode>")
-def pincode_info(pincode):
-    return modify_response(
-        f"https://abhaykumar.xo.je/api/proxy420.php?tool=pincode_info&query={pincode}"
-    )
-
-@app.route("/ip=<ip>")
-def ip_info(ip):
-    return modify_response(
-        f"https://abhaykumar.xo.je/api/proxy420.php?tool=ip_info&query={ip}"
-    )
-
-@app.route("/ifsc=<ifsc>")
-def ifsc_info(ifsc):
-    return modify_response(
-        f"https://abhaykumar.xo.je/api/proxy420.php?tool=ifsc_info&query={ifsc}"
-    )
 
 @app.route("/")
 def home():
     return jsonify({
+        "status": True,
         "developer": DEVELOPER_NAME,
-        "status": True
+        "endpoints": {
+            "pincode": "/pincode=800026",
+            "ip": "/ip=104.23.45.198",
+            "ifsc": "/ifsc=SBIN0016645"
+        }
     })
+
+@app.route("/pincode=<pincode>")
+def pincode(pincode):
+    url = f"https://abhaykumar.xo.je/api/proxy420.php?tool=pincode_info&query={pincode}"
+    return fetch_data(url)
+
+@app.route("/ip=<ip>")
+def ip(ip):
+    url = f"https://abhaykumar.xo.je/api/proxy420.php?tool=ip_info&query={ip}"
+    return fetch_data(url)
+
+@app.route("/ifsc=<ifsc>")
+def ifsc(ifsc):
+    url = f"https://abhaykumar.xo.je/api/proxy420.php?tool=ifsc_info&query={ifsc}"
+    return fetch_data(url)
 
 app = app
