@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-DEVELOPER_NAME = "⏤͟͟͞͞Rᴀᴊᴘᴜᴛ Sᴜʀᴀᴊ </> 🚩"
+DEVELOPER_NAME = "Rajput Suraj Raj 🚩🇮🇳"
 
 def modify_response(url):
     try:
@@ -24,30 +24,27 @@ def modify_response(url):
 
 @app.route("/pincode=<pincode>")
 def pincode_info(pincode):
-    url = f"https://abhaykumar.xo.je/api/proxy420.php?tool=pincode_info&query={pincode}"
-    return modify_response(url)
+    return modify_response(
+        f"https://abhaykumar.xo.je/api/proxy420.php?tool=pincode_info&query={pincode}"
+    )
 
 @app.route("/ip=<ip>")
 def ip_info(ip):
-    url = f"https://abhaykumar.xo.je/api/proxy420.php?tool=ip_info&query={ip}"
-    return modify_response(url)
+    return modify_response(
+        f"https://abhaykumar.xo.je/api/proxy420.php?tool=ip_info&query={ip}"
+    )
 
 @app.route("/ifsc=<ifsc>")
 def ifsc_info(ifsc):
-    url = f"https://abhaykumar.xo.je/api/proxy420.php?tool=ifsc_info&query={ifsc}"
-    return modify_response(url)
+    return modify_response(
+        f"https://abhaykumar.xo.je/api/proxy420.php?tool=ifsc_info&query={ifsc}"
+    )
 
 @app.route("/")
 def home():
     return jsonify({
-        "status": True,
         "developer": DEVELOPER_NAME,
-        "endpoints": {
-            "pincode": "/pincode=800026",
-            "ip": "/ip=104.23.45.198",
-            "ifsc": "/ifsc=SBIN0016645"
-        }
+        "status": True
     })
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+app = app
