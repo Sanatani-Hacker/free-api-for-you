@@ -1,39 +1,47 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
 import requests
+import json
 
 app = Flask(__name__)
 
 DEVELOPER_NAME = "⏤͟͟͞͞Rᴀᴊᴘᴜᴛ Sᴜʀᴀᴊ </> 🚩"
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/137.0 Safari/537.36",
-    "Accept": "application/json,text/plain,*/*",
-    "Connection": "keep-alive"
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "*/*"
 }
 
 def fetch_data(url):
     try:
-        response = requests.get(
+        r = requests.get(
             url,
             headers=HEADERS,
             timeout=30,
             allow_redirects=True
         )
 
-        response.raise_for_status()
+        text = r.text.strip()
 
-        data = response.json()
+        try:
+            data = json.loads(text)
 
-        if isinstance(data, dict):
-            data["developer"] = DEVELOPER_NAME
+            if isinstance(data, dict):
+                data["developer"] = DEVELOPER_NAME
 
-        return jsonify(data)
+            return jsonify(data)
+
+        except:
+            return jsonify({
+                "status": True,
+                "developer": DEVELOPER_NAME,
+                "raw_response": text
+            })
 
     except Exception as e:
         return jsonify({
+            "status": False,
             "developer": DEVELOPER_NAME,
-            "error": str(e),
-            "status": False
+            "error": str(e)
         })
 
 @app.route("/")
