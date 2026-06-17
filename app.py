@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-DEVELOPER_NAME = "Rᴀᴊᴘᴜᴛ Sᴜʀᴀᴊ </>"
+DEVELOPER_NAME = "⏤͟͟͞͞Rᴀᴊᴘᴜᴛ Sᴜʀᴀᴊ </> 🚩"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/137.0 Safari/537.36",
